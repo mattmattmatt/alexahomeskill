@@ -21,7 +21,7 @@ router.use('/verify', function(req, res, next) {
     }
     res.json({
         access_token: 'accsstkn!',
-        expires_in: 60,
+        expires_in: 60 * 60 * 24,
         refresh_token: 'rfrshtkn!',
     });
 });
