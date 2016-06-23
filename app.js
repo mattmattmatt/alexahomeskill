@@ -17,16 +17,21 @@ function ensureSec(req, res, next) {
         return next();
     }
     debug('Request over HTTP, redirecting to HTTPS.');
-    res.redirect('https://' + req.headers.host + req.url);
+    res.redirect('https://' + req.headers.hostname + req.url);
 };
 
 function ensureCanonical(req, res, next) {
     if (req.path.length > 1 && req.path.endsWith('/')) {
         debug('Redirecting to canonical URL without trailing /');
-        res.redirect(req.protocol + '://' + req.headers.host + req.url.slice(0, -1));
+        res.redirect(req.protocol + '://' + req.headers.hostname + req.url.slice(0, -1));
     } else {
         return next();
     }
+}
+
+function logRequests(req, res, next) {
+    debug(req.method, req.originalUrl, req.headers['user-agent'], JSON.stringify(req.body));
+    return next();
 }
 
 function registerErrorHandlers() {
@@ -75,6 +80,7 @@ function registerRoutes() {
     app.set('view engine', 'jade');
     app.use(ensureSec);
     app.use(ensureCanonical);
+    app.use(logRequests);
 
     // uncomment after placing your favicon in /public
     //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

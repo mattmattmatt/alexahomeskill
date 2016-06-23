@@ -11,16 +11,18 @@ router.get('/login', function(req, res, next) {
 });
 
 router.use('/verify', function(req, res, next) {
-    if (req.query.code !== '12345abcde') {
-        debug('Authorization code wrong: ' + req.query.code);
+    if (req.body.code !== '12345abcde' && req.body.refresh_token !== 'rfrshtkn!') {
+        debug('Authorization code wrong: ' + req.body.code);
+        debug('Refresj token code wrong: ' + req.body.refresh_token);
         debug('Req.body: ' + JSON.stringify(req.body));
         var err = new Error('Invalid code');
         err.status = 401;
         return next(err);
     }
     res.json({
-        access_token: 'aaaaabbbbb',
-        expires_in: 60
+        access_token: 'accsstkn!',
+        expires_in: 60,
+        refresh_token: 'rfrshtkn!',
     });
 });
 
