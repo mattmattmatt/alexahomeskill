@@ -17,13 +17,13 @@ function ensureSec(req, res, next) {
         return next();
     }
     debug('Request over HTTP, redirecting to HTTPS.');
-    res.redirect('https://' + req.headers.hostname + req.url);
+    res.redirect('https://' + req.headers.host + req.url);
 };
 
 function ensureCanonical(req, res, next) {
     if (req.path.length > 1 && req.path.endsWith('/')) {
         debug('Redirecting to canonical URL without trailing /');
-        res.redirect(req.protocol + '://' + req.headers.hostname + req.url.slice(0, -1));
+        res.redirect(req.protocol + '://' + req.headers.host + req.url.slice(0, -1));
     } else {
         return next();
     }
