@@ -11,6 +11,7 @@ router.get('/login', function(req, res, next) {
 });
 
 router.use('/verify', function(req, res, next) {
+    console.log('verifying', req.body);
     if (req.body.code !== '12345abcde' && req.body.refresh_token !== 'rfrshtkn!') {
         debug('Authorization code wrong: ' + req.body.code);
         debug('Refresj token code wrong: ' + req.body.refresh_token);
